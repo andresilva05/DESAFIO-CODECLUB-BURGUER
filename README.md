@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Getting Started with CodeClub Burguer 
 
 Este projeto foi inicializado com [Create React App](https://github.com/facebook/create-react-app).
 
