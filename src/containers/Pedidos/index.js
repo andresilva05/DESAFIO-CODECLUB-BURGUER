@@ -22,23 +22,31 @@ function Pedidos() {
   const [pedidos, setPedidos] = useState([]); // Cria o estado para armazenar os pedidos
   const navigate = useNavigate(); // Inicializa o hook para navegação
 
-  // Função para carregar pedidos (opcional, dependendo da sua lógica)
+  // Função para carregar pedidos
   useEffect(() => {
     async function fetchPedidos() {
-      // Função assíncrona para buscar pedidos da API
-      const response = await axios.get("http://localhost:4000/order");
-      setPedidos(response.data); // Atualiza o estado com os pedidos recebidos
+      try {
+        // Função assíncrona para buscar pedidos da API
+        const response = await axios.get("https://api-desafio-codeclub-burguer-mwik.vercel.app/order"); // URL da API corrigida
+        setPedidos(response.data); // Atualiza o estado com os pedidos recebidos
+      } catch (error) {
+        alert("Erro ao carregar pedidos: " + error.message); // Tratamento de erro
+      }
     }
     fetchPedidos(); // Chama a função para buscar pedidos ao carregar o componente
   }, []); // O array vazio garante que a função seja chamada apenas uma vez na montagem do componente
 
   async function DeletaPedido(pedidoId) {
     // Função assíncrona para deletar um pedido
-    await axios.delete(`http://localhost:4000/order/${pedidoId}`); // Faz a requisição DELETE à API
+    try {
+      await axios.delete(`https://api-desafio-codeclub-burguer-mwik.vercel.app/order/${pedidoId}`); // Faz a requisição DELETE à API
 
-    // Remover o pedido deletado do estado
-    const newPedidos = pedidos.filter((pedido) => pedido.id !== pedidoId); // Filtra os pedidos, removendo o deletado
-    setPedidos(newPedidos); // Atualiza o estado com os pedidos restantes
+      // Remover o pedido deletado do estado
+      const newPedidos = pedidos.filter((pedido) => pedido.id !== pedidoId); // Filtra os pedidos, removendo o deletado
+      setPedidos(newPedidos); // Atualiza o estado com os pedidos restantes
+    } catch (error) {
+      alert("Erro ao deletar pedido: " + error.message); // Tratamento de erro
+    }
   }
 
   function goBackPage() {
@@ -77,13 +85,3 @@ function Pedidos() {
 }
 
 export default Pedidos; // Exporta o componente Pedidos para ser utilizado em outras partes da aplicação
-
-
-// Explicações Adicionais:
-// useEffect: Um hook que permite realizar efeitos colaterais em componentes funcionais, como buscar dados de uma API. No exemplo, ele é usado para buscar pedidos quando o componente é montado.
-
-// axios: Uma biblioteca popular para fazer requisições HTTP. Neste caso, é utilizada para buscar e deletar pedidos da API.
-
-// Filtragem de pedidos: Ao deletar um pedido, o estado é atualizado filtrando os pedidos existentes, de modo que o pedido excluído não seja mais exibido.
-
-// Navegação: O useNavigate permite que você altere a rota da aplicação programaticamente, facilitando a navegação entre as páginas.
